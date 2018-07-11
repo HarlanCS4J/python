@@ -1,0 +1,6 @@
+*.sublime*
+hosted/sheerid-lightbox-example.html
+hosted/sheerid-lightbox.md
+*.js
+*.ejs
+
