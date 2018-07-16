@@ -4,4 +4,8 @@ hosted/sheerid-lightbox.md
 *.js
 *.ejs
 *.lock
+metrics.interim
+WiredTigerLog*.*
 
+MongoDB/db/diagnostic.data/metrics.interim
+MongoDB/db/journal/WiredTigerLog.0000000007
