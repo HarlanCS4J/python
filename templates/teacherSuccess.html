@@ -1,0 +1,27 @@
+{% extends 'partials/common.html' %}
+{% block body %}
+	<div class='pagetitle'>
+		<H2>Student Verified!</H2>
+	</div>
+	<div class='inputform'>
+		<FORM>
+			You are eligible for this offer.<P>
+
+			Your coupon code is <span class='coupon_code'>##insert couponCode##</span>.<P>
+
+			Bring this code to any of Oregon's participating ski resorts to receive a special discount, courtesy of Rainier Outdoor.<P>
+
+			This coupon code is valid until <span class='expiration'>##insert expiration##</span>.
+
+			<div class="poweredby">
+				Verification services powered by<BR>
+				<img src="{{ url_for('static',filename='assets/sheerid-logo.png') }}" />
+			</div>
+		</FORM>
+
+	</div>
+{% endblock %}
+{% block script %}
+<script>
+
+{% endblock %}

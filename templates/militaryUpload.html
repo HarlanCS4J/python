@@ -1,0 +1,50 @@
+{% extends 'partials/common.html' %}
+{% block body %}
+	<div class='pagetitle'>
+		<H2>Military Document Upload</H2>
+	</div>
+	<div class='inputform'>
+		<form id="upload" action="https://services-sandbox.sheerid.com/rest/0.5/asset" method="POST" enctype="multipart/form-data">
+			Please upload a scan of one of the following so we can verify your enrollment at your university. The document should be dated within the last 4 months.<P>
+			<B>Important - the documentation must display:<B><BR>
+    		<UL>
+    			<LI>Your full name (<span class='username'>##insert username##</span>).</LI>
+    			<LI>The name of your service organization (<span class='organization'>##insert school##</span>).</LI>
+    			<LI>Your current enlistment status (<span class='enlistment'>##insert status##</span>).
+    		</UL>
+    		<I>Examples of Acceptable Documentation:</I><BR>
+    		<div id='docexample'></div>
+    		Acceptable formats are: .bmp, .gif, .jpg, .png, or .pdf.</p>
+    		<p>
+    		<input type="hidden" name="token" value="##insert assetToken##">
+	  		<input type="file" name="hidden-file-upload" id="hidden-file-upload" required>
+<!--  			<input type="hidden" name="success" value="http://www.google.com">http://127.0.0.1:5000/uploadsuccess?updateRequest=##insert requestId##">-->
+<!--    		<input type="hidden" name="failure" value="http://www.google.com">http://127.0.0.1:5000/student/uploadsuccess?requestId=##insert requestId##"> 	-->
+    		<input type="submit" name="submit" value="Upload Document">
+			<div class='disclaimer'>
+				NOTE: If your document scan is too fuzzy to read, does not show your full and legal name or shows a name different from the one you are verifying this offer under, you will not be able to finalize the verification process. Please do not include any confidential information on the uploaded documents, such as social security numbers or banking details. Please be sure any sensitive information is blacked out before you upload your document.</p>
+			</div> 
+			<div class="poweredby">
+				Verification services powered by<BR>
+				<img src="{{ url_for('static',filename='assets/sheerid-logo.png') }}" />
+			</div>
+		</FORM>
+
+	</div>
+{% endblock %}
+{% block script %}
+<script>
+	window.onload=update;
+	function update(){
+		var status = '{{ get_var(goat) }}';
+		var insert = {
+			"Active Duty":"Any document that proves you are currently serving under Title 10 Active Duty Orders for 30 days or more.",
+			"Reservist":"Any document that proves you are currently serving under Title 32 Active Duty Orders for 30 days or more.",
+			"Military Retiree":"Any document that proves you are a Retiree from the US Armed Forces, Disabled Veteran with a rating of 30% or higher, or a registered Military Dependent",
+			"Veteran":"Any document that proves you met the qualifications of military service and were honorably discharged.",
+			"Civilian Employee":"Any military documentation that shows first, last name, tenure status, and position appointment status."
+		};
+		document.getElementById('docexample').innerHTML=insert[status];
+	}
+</script>
+{% endblock %}
