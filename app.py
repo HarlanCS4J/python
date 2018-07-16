@@ -148,7 +148,7 @@ def pullKey(dictIn,keyIn):
 		return ""
 
 def stringReplace(stringIn, oldSub, newSub):
-	if if oldSub in stringIn:
+	if oldSub in stringIn:
 		return stringIn.replace(oldSub, newSub)
 	else:
 		return stringIn
