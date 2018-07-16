@@ -56,7 +56,6 @@ def form_submit():
 	headers={'Authorization':'Bearer '+bearerToken}
 	source=request.form.get("source")
 	dataDict['templateId']=templateIDs[source]
-	print(headers)
 	print(dataDict)
 	
 	req=requests.request('POST',url, headers=headers, data=dataDict)
@@ -113,18 +112,18 @@ def get_var(self, *args):
 
 def handleErrors(html):
 	if 'errorMessage' in request.args.keys():
-		html = html.replace('<div class="error-container"> </div>','<div class="error-container"><p>Error: '+request.args.get('errorMessage')+'</p></div>')
+		html = stringReplace(html,'<div class="error-container"> </div>','<div class="error-container"><p>Error: '+request.args.get('errorMessage')+'</p></div>')
 	if 'couponCode' in request.args.keys():
-		html = html.replace('##insert couponCode##',request.args.get('couponCode'))
-		html = html.replace('##insert expiration##',request.args.get('expiration'))
+		html = stringReplace(html,'##insert couponCode##',request.args.get('couponCode'))
+		html = stringReplace(html,'##insert expiration##',request.args.get('expiration'))
 	if 'requestId' in request.args.keys():
 		requestId=request.args.get('requestId')
 		reqLookUp = dbase.find_one({"requestId":requestId})
-		html = html.replace('##insert username##',pullKey(reqLookUp,'FIRST_NAME')[0]+" "+pullKey(reqLookUp,'LAST_NAME')[0])
-		html = html.replace('##insert school##',pullKey(reqLookUp,'organizationName')[0])
-		html = html.replace('##insert requestId##',requestId)
-		enlistment = pullKey(reqLookUp,'AFFILIATION')[0].replace("_"," ").title()
-		html = html.replace('##insert status##',enlistment)
+		html = stringReplace(html,'##insert username##',pullKey(reqLookUp,'FIRST_NAME')[0]+" "+pullKey(reqLookUp,'LAST_NAME')[0])
+		html = stringReplace(html,'##insert school##',pullKey(reqLookUp,'organizationName')[0])
+		html = stringReplace(html,'##insert requestId##',requestId)
+		enlistment = stringReplace(pullKey(reqLookUp,'AFFILIATION')[0],"_"," ").title()
+		html = stringReplace(html,'##insert status##',enlistment)
 		
 		url="https://services-sandbox.sheerid.com/rest/0.5/asset/token"
 		req=requests.request('POST',url, headers={'Authorization':'Bearer '+bearerToken}, data={'requestId':requestId})
@@ -132,7 +131,7 @@ def handleErrors(html):
 		print (req)
 		assetToken = req.get('token')
 
-		html = html.replace('##insert assetToken##',assetToken)
+		html = stringReplace(html,'##insert assetToken##',assetToken)
 	return html
 
 def pullKey(dictIn,keyIn):
@@ -140,3 +139,9 @@ def pullKey(dictIn,keyIn):
 		return dictIn.get(keyIn)
 	else:
 		return ""
+
+def stringReplace(stringIn, oldSub, newSub):
+	if if oldSub in stringIn:
+		return stringIn.replace(oldSub, newSub)
+	else:
+		return stringIn
