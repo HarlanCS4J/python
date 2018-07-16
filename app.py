@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_pymongo import PyMongo
 import sys, datetime, requests, os, json
+from boto.s3.connection import S3Connection
+
 
 sys.path.insert(0,'./routes/')
 from studentRoute import StudentRoute
@@ -11,13 +13,14 @@ from firstResponderRoute import FirstResponderRoute
 
 #variables
 app = Flask(__name__, template_folder='templates')
-app.config["MONGO_URI"] = "mongodb://localhost:27017/shastaoutdoor"
+app.config["MONGO_URI"] = S3Connection(os.environ['MONGODB_URI'])
 
 affiliationDict={'student':StudentRoute,'teacher':TeacherRoute,'firstresponder':FirstResponderRoute,'military':MilitaryRoute}
 templateIDs={"student":['5b4520d70455a91399295bec'],"military":['5b4503c8d3a2b414ca65bf9f'],"teacher":['5b44fc14d3a2b414ca65b18e'],"firstresponder":['5b450394d3a2b414ca65bef7']}
 vargets={}
 mongo = PyMongo(app)
 dbase=mongo.db.transactions
+bearerToken=S3Connection(os.environ['SANDBOX_TOKEN'])
 
 @app.route("/")
 def routeRoot():
@@ -50,10 +53,9 @@ def get_var(self, *args):
 def form_submit():
 	url="https://services-sandbox.sheerid.com/rest/0.5/verification"
 	dataDict=dict(request.form.copy())
-	headers={'Authorization':'Bearer '+os.getenv('SANDBOX_TOKEN')}
+	headers={'Authorization':'Bearer '+bearerToken}
 	source=request.form.get("source")
 	dataDict['templateId']=templateIDs[source]
-	print(headers)
 	print(dataDict)
 	
 	req=requests.request('POST',url, headers=headers, data=dataDict)
@@ -76,24 +78,31 @@ def form_submit():
 			else:
 				couponCode='COUPON_ERROR'
 				expiration = -1
+			print ("AAAAAAAAAAAAAAAAAAAAAAAAA")
 			exp=datetime.date.today()+datetime.timedelta(days=int(expiration))
+			print ("AAAAAAAAAAAAAAAAAAAAAAAAA")
 			output =  redirect('/'+source+'/success?couponCode='+couponCode+"&expiration="+exp.strftime('%b %d, %Y'))
+			print ("couponCode: "+couponCode)
 			dataDict['couponCode']=couponCode
+			print ("exp: "+exp.strftime('%b %d, %Y'))
 			dataDict['expiration']=exp.strftime('%b %d, %Y')
+			print ("AAAAAAAAAAAAAAAAAAAAAAAAA")
 		else:
 			output = redirect('/'+source+'/upload?requestId='+reqId)
 			dataDict['docReview']='unsubmitted'
 	elif status=="400":
 		output = redirect('/'+source+'/verify?errorMessage='+jsonDict.get("message"))
 		dataDict['result']=''
+	print ("dataDict: "+dataDict)
 	dbase.insert(dataDict)
+	print (output)
 	return output
 
 @app.route('/doc_review',methods=['POST'])
 def doc_review():
 	url="https://services-sandbox.sheerid.com/rest/0.5/asset/token"
 	dataDict=dict(request.form.copy())
-	headers={'Authorization':'Bearer '+os.getenv('SANDBOX_TOKEN')}
+	headers={'Authorization':'Bearer '+bearerToken}
 	source=request.form.get("source")
 	dataDict['templateId']=templateIDs[source]
 	
@@ -110,24 +119,36 @@ def get_var(self, *args):
 
 def handleErrors(html):
 	if 'errorMessage' in request.args.keys():
-		html = html.replace('<div class="error-container"> </div>','<div class="error-container"><p>Error: '+request.args.get('errorMessage')+'</p></div>')
+		html = stringReplace(html,'<div class="error-container"> </div>','<div class="error-container"><p>Error: '+request.args.get('errorMessage')+'</p></div>')
 	if 'couponCode' in request.args.keys():
-		html = html.replace('##insert couponCode##',request.args.get('couponCode'))
-		html = html.replace('##insert expiration##',request.args.get('expiration'))
+		html = stringReplace(html,'##insert couponCode##',request.args.get('couponCode'))
+		html = stringReplace(html,'##insert expiration##',request.args.get('expiration'))
 	if 'requestId' in request.args.keys():
 		requestId=request.args.get('requestId')
 		reqLookUp = dbase.find_one({"requestId":requestId})
-		html = html.replace('##insert username##',reqLookUp.get('FIRST_NAME')[0]+" "+reqLookUp.get('LAST_NAME')[0])
-		html = html.replace('##insert school##',reqLookUp.get('organizationName')[0])
-		html = html.replace('##insert requestId##',requestId)
-		enlistment = reqLookUp.get('AFFILIATION')[0].replace("_"," ").title()
-		html = html.replace('##insert status##',enlistment)
+		html = stringReplace(html,'##insert username##',pullKey(reqLookUp,'FIRST_NAME')[0]+" "+pullKey(reqLookUp,'LAST_NAME')[0])
+		html = stringReplace(html,'##insert school##',pullKey(reqLookUp,'organizationName')[0])
+		html = stringReplace(html,'##insert requestId##',requestId)
+		enlistment = stringReplace(pullKey(reqLookUp,'AFFILIATION')[0],"_"," ").title()
+		html = stringReplace(html,'##insert status##',enlistment)
 		
 		url="https://services-sandbox.sheerid.com/rest/0.5/asset/token"
-		req=requests.request('POST',url, headers={'Authorization':'Bearer '+os.getenv('SANDBOX_TOKEN')}, data={'requestId':requestId})
+		req=requests.request('POST',url, headers={'Authorization':'Bearer '+bearerToken}, data={'requestId':requestId})
 		req=req.json()
 		print (req)
 		assetToken = req.get('token')
 
-		html = html.replace('##insert assetToken##',assetToken)
+		html = stringReplace(html,'##insert assetToken##',assetToken)
 	return html
+
+def pullKey(dictIn,keyIn):
+	if keyIn in dictIn.keys():
+		return dictIn.get(keyIn)
+	else:
+		return ""
+
+def stringReplace(stringIn, oldSub, newSub):
+	if if oldSub in stringIn:
+		return stringIn.replace(oldSub, newSub)
+	else:
+		return stringIn
