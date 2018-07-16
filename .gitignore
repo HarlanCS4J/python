@@ -10,3 +10,4 @@ WiredTigerLog*.*
 MongoDB/db/diagnostic.data/metrics.interim
 MongoDB/db/journal/WiredTigerLog.0000000007
 *.2018-07-16T17-27-15Z-00000
+heroku.logs
