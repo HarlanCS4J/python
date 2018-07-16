@@ -13,7 +13,7 @@ from firstResponderRoute import FirstResponderRoute
 
 #variables
 app = Flask(__name__, template_folder='templates')
-app.config["MONGO_URI"] = "mongodb://localhost:27017/shastaoutdoor"
+app.config["MONGO_URI"] = S3Connection(os.environ['MONGODB_URI'])
 
 affiliationDict={'student':StudentRoute,'teacher':TeacherRoute,'firstresponder':FirstResponderRoute,'military':MilitaryRoute}
 templateIDs={"student":['5b4520d70455a91399295bec'],"military":['5b4503c8d3a2b414ca65bf9f'],"teacher":['5b44fc14d3a2b414ca65b18e'],"firstresponder":['5b450394d3a2b414ca65bef7']}
