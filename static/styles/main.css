@@ -1,6 +1,8 @@
 body{
 	background-color: #ffe69b;
 	font-family: "Trebuchet MS", sans-serif;
+	padding: 0px;
+	margin: 0px;
 }
 
 .error-container{
@@ -19,6 +21,7 @@ nav{
 	top: 0;
 	width: 100%;
 	margin: 0px;
+	margin-left: 0;
 }
 
 .social{
