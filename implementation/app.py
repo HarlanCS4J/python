@@ -78,17 +78,24 @@ def form_submit():
 			else:
 				couponCode='COUPON_ERROR'
 				expiration = -1
+			print ("AAAAAAAAAAAAAAAAAAAAAAAAA")
 			exp=datetime.date.today()+datetime.timedelta(days=int(expiration))
+			print ("AAAAAAAAAAAAAAAAAAAAAAAAA")
 			output =  redirect('/'+source+'/success?couponCode='+couponCode+"&expiration="+exp.strftime('%b %d, %Y'))
+			print ("couponCode: "+couponCode)
 			dataDict['couponCode']=couponCode
+			print ("exp: "+exp.strftime('%b %d, %Y'))
 			dataDict['expiration']=exp.strftime('%b %d, %Y')
+			print ("AAAAAAAAAAAAAAAAAAAAAAAAA")
 		else:
 			output = redirect('/'+source+'/upload?requestId='+reqId)
 			dataDict['docReview']='unsubmitted'
 	elif status=="400":
 		output = redirect('/'+source+'/verify?errorMessage='+jsonDict.get("message"))
 		dataDict['result']=''
+	print ("dataDict: "+dataDict)
 	dbase.insert(dataDict)
+	print (output)
 	return output
 
 @app.route('/doc_review',methods=['POST'])
