@@ -3,25 +3,40 @@
 	<div class='pagetitle'>
 		<H2>get some space</H2>
 	</div>
-	<div class='slideshow-container'>
-		<div class='mySlides fade'>
-			<div class='numbertext'>1 / 2</div>
-			<img src={{ url_for('static',filename='assets/snowboarding.png') }} style='width:100%'>
-			<div class='text'>Get FREE lift tickets to NorCal resorts</div>
+	<div class='grid-container'>
+		<div class='slideshow-container'>
+			<div class='mySlides fade'>
+				<div class='numbertext'>1 / 2</div>
+				<img src={{ url_for('static',filename='assets/snowboarding.png') }} style='width:100%'>
+				<div class='text'>Get FREE lift tickets to NorCal resorts</div>
+			</div>
+			<div class='mySlides fade'>
+				<div class='numbertext'>2 / 2</div>
+				<img src={{ url_for('static',filename='assets/kayak.png') }} style='width:100%'>
+				<div class='text'>Summer is just around the bend. Are you ready?</div>
+			</div>
+			<A class='prev' onclick='plusSlides(-1)'>&#10094;</A>
+			<A class='next' onclick='plusSlides(1)'>&#10095;</A>
 		</div>
-		<div class='mySlides fade'>
-			<div class='numbertext'>2 / 2</div>
-			<img src={{ url_for('static',filename='assets/kayak.png') }} style='width:100%'>
-			<div class='text'>River season is just around the bend. Are you ready?</div>
+		<br>
+		<div style="text-align:center">
+	 		<span class="dot" onclick="currentSlide(0)"></span>
+	 		<span class="dot" onclick="currentSlide(1)"></span>
 		</div>
-		<A class='prev' onclick='plusSlides(-1)'>&#10094;</A>
-		<A class='next' onclick='plusSlides(1)'>&#10095;</A>
+		<div class='blockAd'>
+			<img src={{ url_for('static',filename='assets/jacket.png')}}>
+			<div class='adText'>Climbing every mountain never looked so good.</div>
+		</div>
+		<div class='blockAd'>
+			<img src={{ url_for('static',filename='assets/hood.png')}}>
+			<div class='adText'>No snowbunny here. Get womens' activewear today.</div>
+		</div>
+		<div class='blockAd'>
+			<img src={{ url_for('static',filename='assets/jacket.png')}}>
+			<div class='adText'>Climbing every mountain never looked so good.</div>
+		</div>
+
 	</div>
-	<br>
-	<div style="text-align:center">
- 	<span class="dot" onclick="currentSlide(0)"></span>
- 	<span class="dot" onclick="currentSlide(1)"></span>
-</div>
 {% endblock %}
 {% block script %}
 <script>
