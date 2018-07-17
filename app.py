@@ -42,8 +42,7 @@ def routeTraffic(affiliation, view):
 		landingPage=affiliationDict[affiliation](view)
 	else:
 		landingPage=RootRoute("URL-Error", request.url)
-	html=handleErrors(landingPage.getBody())
-	return html
+	return landingPage.getBody()
 
 def get_var(self, *args):
 	return vargets[arg[0]]
@@ -55,7 +54,6 @@ def form_submit():
 	headers={'Authorization':'Bearer '+bearerToken}
 	source=request.form.get("source")
 	dataDict['templateId']=templateIDs[source]
-	print(dataDict)
 	
 	req=requests.request('POST',url, headers=headers, data=dataDict)
 	jsonDict=req.json()
@@ -77,24 +75,18 @@ def form_submit():
 			else:
 				couponCode='COUPON_ERROR'
 				expiration = -1
-			print ("AAAAAAAAAAAAAAAAAAAAAAAAA")
 			exp=datetime.date.today()+datetime.timedelta(days=int(expiration))
-			print ("AAAAAAAAAAAAAAAAAAAAAAAAA")
-			output =  redirect('/'+source+'/success?couponCode='+couponCode+"&expiration="+exp.strftime('%b %d, %Y'))
-			print ("couponCode: "+couponCode)
+			expString = exp.strftime('%b %d, %Y')
+			output =  redirect('/'+source+'/success?couponCode='+couponCode+"&expiration="+expString)
 			dataDict['couponCode']=couponCode
-			print ("exp: "+exp.strftime('%b %d, %Y'))
-			dataDict['expiration']=exp.strftime('%b %d, %Y')
-			print ("AAAAAAAAAAAAAAAAAAAAAAAAA")
+			dataDict['expiration']=expString
 		else:
 			output = redirect('/'+source+'/upload?requestId='+reqId)
 			dataDict['docReview']='unsubmitted'
 	elif status=="400":
 		output = redirect('/'+source+'/verify?errorMessage='+jsonDict.get("message"))
 		dataDict['result']=''
-	print ("dataDict: "+dataDict)
 	dbase.insert(dataDict)
-	print (output)
 	return output
 
 @app.route('/doc_review',methods=['POST'])
@@ -115,30 +107,6 @@ def doc_review():
 
 def get_var(self, *args):
 	return vargets[arg[0]]
-
-def handleErrors(html):
-	if 'errorMessage' in request.args.keys():
-		html = stringReplace(html,'<div class="error-container"> </div>','<div class="error-container"><p>Error: '+request.args.get('errorMessage')+'</p></div>')
-	if 'couponCode' in request.args.keys():
-		html = stringReplace(html,'##insert couponCode##',request.args.get('couponCode'))
-		html = stringReplace(html,'##insert expiration##',request.args.get('expiration'))
-	if 'requestId' in request.args.keys():
-		requestId=request.args.get('requestId')
-		reqLookUp = dbase.find_one({"requestId":requestId})
-		html = stringReplace(html,'##insert username##',pullKey(reqLookUp,'FIRST_NAME')[0]+" "+pullKey(reqLookUp,'LAST_NAME')[0])
-		html = stringReplace(html,'##insert school##',pullKey(reqLookUp,'organizationName')[0])
-		html = stringReplace(html,'##insert requestId##',requestId)
-		enlistment = stringReplace(pullKey(reqLookUp,'AFFILIATION')[0],"_"," ").title()
-		html = stringReplace(html,'##insert status##',enlistment)
-		
-		url="https://services-sandbox.sheerid.com/rest/0.5/asset/token"
-		req=requests.request('POST',url, headers={'Authorization':'Bearer '+bearerToken}, data={'requestId':requestId})
-		req=req.json()
-		print (req)
-		assetToken = req.get('token')
-
-		html = stringReplace(html,'##insert assetToken##',assetToken)
-	return html
 
 def pullKey(dictIn,keyIn):
 	if keyIn in dictIn.keys():

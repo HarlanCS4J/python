@@ -4,8 +4,9 @@
 	<TITLE>Shasta Outdoor</TITLE>
 	<link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static',filename='assets/favicon-32x32.png') }}">
 	<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/main.css') }}">
+
 </HEAD>
-<BODY>
+<BODY onload='embedQueryArgs()'>
  	<NAV>
  		<A HREF='/'>HOME</A>
  		<A HREF='/about'>ABOUT</A>
@@ -52,5 +53,15 @@
 		</div>
 	</footer>
 </html>
+<script type="text/javascript">
+	function embedQueryArgs(){
+		var query = window.location.search.substring(1);
+    	var vars = query.split("&");
+    	for (var i=0;i<vars.length;i++) {
+    		var pair = vars[i].split("=");
+    		document.getElementById(pair[0]).innerHTML=pair[1].split("%20").join(" ");
+    	}
+	}
+</script>
 {% block script %}
 {% endblock %}
