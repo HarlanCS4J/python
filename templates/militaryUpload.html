@@ -8,9 +8,9 @@
 			Please upload a scan of one of the following so we can verify your enrollment at your university. The document should be dated within the last 4 months.<P>
 			<B>Important - the documentation must display:<B><BR>
     		<UL>
-    			<LI>Your full name (<span class='username'>##insert username##</span>).</LI>
-    			<LI>The name of your service organization (<span class='organization'>##insert school##</span>).</LI>
-    			<LI>Your current enlistment status (<span class='enlistment'>##insert status##</span>).
+    			<LI>Your full name (<span class='username'>{{ username }}</span>).</LI>
+    			<LI>The name of your service organization (<span class='organization'>{{ branch }}</span>).</LI>
+    			<LI>Your current enlistment status (<span class='enlistment'>{{ enlistment }}</span>).
     		</UL>
     		<I>Examples of Acceptable Documentation:</I><BR>
     		<div id='docexample'></div>
@@ -18,8 +18,8 @@
     		<p>
     		<input type="hidden" name="token" value="##insert assetToken##">
 	  		<input type="file" name="hidden-file-upload" id="hidden-file-upload" required>
-<!--  			<input type="hidden" name="success" value="http://www.google.com">http://127.0.0.1:5000/uploadsuccess?updateRequest=##insert requestId##">-->
-<!--    		<input type="hidden" name="failure" value="http://www.google.com">http://127.0.0.1:5000/student/uploadsuccess?requestId=##insert requestId##"> 	-->
+ 			<input type="hidden" name="success" value=>-->
+	 		<input type="hidden" name="failure" value=> 	-->
     		<input type="submit" name="submit" value="Upload Document">
 			<div class='disclaimer'>
 				NOTE: If your document scan is too fuzzy to read, does not show your full and legal name or shows a name different from the one you are verifying this offer under, you will not be able to finalize the verification process. Please do not include any confidential information on the uploaded documents, such as social security numbers or banking details. Please be sure any sensitive information is blacked out before you upload your document.</p>
