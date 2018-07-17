@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 from flask_pymongo import PyMongo
 import sys, datetime, requests, os, json
 
@@ -20,6 +20,7 @@ vargets={}
 mongo = PyMongo(app)
 dbase=mongo.db.transactions
 bearerToken=os.environ['SANDBOX_TOKEN']
+session={}
 
 @app.route("/")
 def routeRoot():
@@ -69,7 +70,6 @@ def form_submit():
 			print ('---------------------------------------------OUTPUT----------------------------------------------')
 			coupon=jsonDict.get('metadata')
 			if 'couponCode' in coupon.keys():
-				print(coupon)
 				couponCode=coupon.get('couponCode')
 				expiration=coupon.get('expiration')
 			else:
@@ -77,11 +77,18 @@ def form_submit():
 				expiration = -1
 			exp=datetime.date.today()+datetime.timedelta(days=int(expiration))
 			expString = exp.strftime('%b %d, %Y')
+			session=dataDict.copy()
 			output =  redirect('/'+source+'/success?couponCode='+couponCode+"&expiration="+expString)
 			dataDict['couponCode']=couponCode
 			dataDict['expiration']=expString
 		else:
-			output = redirect('/'+source+'/upload?requestId='+reqId)
+			url="https://services-sandbox.sheerid.com/rest/0.5/asset/token"
+			req=requests.request('POST',url, headers={'Authorization':'Bearer '+bearerToken}, data={'requestId':reqId})
+			req=req.json()
+			session=dataDict.copy()
+			session['submitToken']=req.get('token')
+			print(session)
+			output = affiliationDict[source]('upload',session).getBody()
 			dataDict['docReview']='unsubmitted'
 	elif status=="400":
 		output = redirect('/'+source+'/verify?errorMessage='+jsonDict.get("message"))
@@ -103,6 +110,7 @@ def doc_review():
 	entry['docReview']='submitted'
 	dbase.replace_one({'requestId':request.form.get('requestId')},entry)
 
+	session=dataDict.copy()
 	return redirect('/'+source+'/uploadsuccess')
 
 def get_var(self, *args):

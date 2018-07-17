@@ -233,3 +233,6 @@ footer{
 .enlistment {
 	font-weight: normal;
 }
+.nonbreaking {
+	white-space: nowrap;
+}
