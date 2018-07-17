@@ -28,15 +28,15 @@ class RootRoute:
 			"<TABLE>"\
 			"<TR><TH colspan=5>PATHS</TH>"\
 			"<TR><TD>"\
-			"<a href='http://127.0.0.1:5000/'>Root Path</A></TD>"\
+			"<a href='/'>Root Path</A></TD>"\
 			"<TD>"\
-			"<a href='http://127.0.0.1:5000/student/'>Student Path</A></TD>"\
+			"<a href='/student/'>Student Path</A></TD>"\
 			"<TD>"\
-			"<a href='http://127.0.0.1:5000/military/'>Military Path</A></TD>"\
+			"<a href='/military/'>Military Path</A></TD>"\
 			"<TD>"\
-			"<a href='http://127.0.0.1:5000/firstresponder/'>1st Responder Path</A></TD>"\
+			"<a href='/firstresponder/'>1st Responder Path</A></TD>"\
 			"<TD>"\
-			"<a href='http://127.0.0.1:5000/teacher/'>Teacher Path</A></TD>"\
+			"<a href='/teacher/'>Teacher Path</A></TD>"\
 			"</TR>"\
 			"<TR><TH colspan=5>FILES</TH>"\
 			"<TR><TD>"\
