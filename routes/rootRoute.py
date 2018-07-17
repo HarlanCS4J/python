@@ -1,27 +1,26 @@
-from flask import Flask, redirect, url_for, request
+from flask import Flask, redirect, url_for, request, render_template
 import sys
 
 #viewSwitch = {"about"}
 #sys.path.insert(0,'./routes/')
 
 class RootRoute:
-	output=""
 	affiliation = "{none}"
 
 	def __init__(self, *args):
 		if len(args)==0:
-			self.loadBody("<B>Affiliation: </B>"+self.affiliation,"<B>View: </B>{none}")
+			self.html=render_template('root.html')
 		elif len(args)==1:
-			self.loadBody("<B>Affiliation: </B>"+self.affiliation,"<B>View: </B>"+args[0])
+			self.html=redirect('/'+arg[0]+'/')
 		elif len(args)==2:
-			self.loadBody("<B>Error: </B>"+args[0], "<B>Message: </B>"+args[1])
+			self.html=render_template('root.html').replace('<!--Errors go here-->',"<B>Error: </B>"+args[0]+"<br><B>Message: </B>"+args[1])
 		else:
-			self.loadBody("<B>Error: </B>Invalid arguments", "<B>Message: </B>"+[msg for msg in args])
+			self.html=render_template('root.html').replace('<!--Errors go here-->',"<B>Error: </B>Invalid arguments<br><B>Message: </B>"+[msg for msg in args])
 
 	app = Flask(__name__, template_folder='../views')
 
 	def getBody(self):
-		return self.output
+		return self.html
 
 	def loadBody(self,*args):
 		self.output="<body background='../static/star-wars-wallpaper-hd.jpg'>"\

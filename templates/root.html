@@ -1,0 +1,54 @@
+{% extends 'partials/common.html' %}
+{% block body %}
+	<div class='pagetitle'>
+		<H2>get some space</H2>
+	</div>
+	<div class='slideshow-container'>
+		<div class='mySlides fade'>
+			<div class='numbertext'>1 / 2</div>
+			<img src={{ url_for('static',filename='assets/snowboarding.png') }} style='width:100%'>
+			<div class='text'>Get FREE lift tickets to NorCal resorts</div>
+		</div>
+		<div class='mySlides fade'>
+			<div class='numbertext'>2 / 2</div>
+			<img src={{ url_for('static',filename='assets/kayak.png') }} style='width:100%'>
+			<div class='text'>River season is just around the bend. Are you ready?</div>
+		</div>
+		<A class='prev' onclick='plusSlides(-1)'>&#10094;</A>
+		<A class='next' onclick='plusSlides(1)'>&#10095;</A>
+	</div>
+	<br>
+	<div style="text-align:center">
+ 	<span class="dot" onclick="currentSlide(0)"></span>
+ 	<span class="dot" onclick="currentSlide(1)"></span>
+</div>
+{% endblock %}
+{% block script %}
+<script>
+	var slideIndex = 0;
+	showSlides();
+
+	function showSlides(){
+		var i;
+		var slideList = document.getElementsByClassName('mySlides');
+		for (i=0;i<slideList.length; i++){
+			slideList[i].style.display='none';
+		}
+		slideList[slideIndex].style.display='block';
+		slideIndex++;
+		if(slideIndex>=slideList.length){slideIndex=0}
+		setTimeout(showSlides,3000);
+	}
+
+	function currentSlide(n){
+		slideIndex=n;
+		showSlides();
+	}
+
+	function plusSlides(n){
+		slideIndex+=n;
+		showSlides();
+	}
+	
+</script>
+{% endblock %}
