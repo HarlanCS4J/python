@@ -423,7 +423,7 @@ img {vertical-align: middle;}
   object-fit: fill;
 }
 .menuAd img {
-	height: 100%;
+	height: inherit;
 	width: 100%;
 	border: 1px;
 	border-color: #ea9600;;
