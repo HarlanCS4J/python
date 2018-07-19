@@ -16,8 +16,8 @@
 			<input type="text" name="LAST_NAME" required value="Name"><br>
 			Email<BR>
 			<input type="email" name="EMAIL" required value="abc@sheerid.com"><br>
-			Birth Date<BR>
-			<input type="date" name="BIRTH_DATE" required value="1990-01-01"><br>
+			Zip Code<BR>
+			<input type="text" name="POSTAL_CODE" required id='custZipCode'><br>
 			<input type="hidden" name="source" value="student">
 			<div class='disclaimer'>
 				By clicking "Submit," you consent to the use of your information for verification purposes. Your information may be transferred to the United States and will be treated according to SheerIDs <a href="http://www.sheerid.com/privacy-policy/">privacy policy</a>.
@@ -40,8 +40,13 @@
             input: document.getElementById('myOrgId'),
             allowName: false,
             proxyName: "organizationName",
+            listeners: {
+                change: function(orgEntity) {
+                    document.getElementById('custZipCode').value = orgEntity.zip;
+                }
+            },
             params: {
-                type: ['UNIVERSITY'],
+                type: ['UNIVERSITY', 'K12'],
                 includeLocation: true
             }
         }
