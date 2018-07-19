@@ -402,6 +402,16 @@ img {vertical-align: middle;}
   margin-bottom: 30px;
   grid-template-columns: 1fr 1fr 1fr 1fr;
 }
+.grid-buttons{
+  display: grid;
+  grid-gap: 20px;
+  background-color: #ea9600;
+  padding: 10px;
+  width: 60%;
+  margin: auto;
+  margin-bottom: 30px;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
 
 .menuAd{
   display: inline-block;
