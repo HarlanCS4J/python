@@ -3,7 +3,7 @@ import sys
 
 #viewSwitch = {"about"}
 #sys.path.insert(0,'./routes/')
-
+rootViews = {'index.html':'root.html','verify':'verify.html'}
 class RootRoute:
 	affiliation = "{none}"
 
@@ -11,7 +11,7 @@ class RootRoute:
 		if len(args)==0:
 			self.html=render_template('root.html')
 		elif len(args)==1:
-			self.html=redirect('/'+arg[0]+'/')
+			self.html=render_template(rootViews[args[0]])
 		elif len(args)==2:
 			self.html=render_template('root.html').replace('<!--Errors go here-->',"<B>Error: </B>"+args[0]+"<br><B>Message: </B>"+args[1])
 		else:

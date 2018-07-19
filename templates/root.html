@@ -1,13 +1,13 @@
 {% extends 'partials/common.html' %}
 {% block body %}
 	<div class='pagetitle'>
-		<H2>get some space</H2>
+		<H2>GET SOME SPACE</H2>
 	</div>
 	<div class='grid-container'>
 		<div class='slideshow-container'>
 			<div class='mySlides fade'>
 				<div class='numbertext'>1 / 2</div>
-				<img src={{ url_for('static',filename='assets/snowboarding.png') }} style='width:100%'>
+				<a href='/verify'><img src={{ url_for('static',filename='assets/snowboarding.png') }} style='width:100%'></a>
 				<div class='text'>Get FREE lift tickets to NorCal resorts</div>
 			</div>
 			<div class='mySlides fade'>
@@ -17,11 +17,11 @@
 			</div>
 			<A class='prev' onclick='plusSlides(-1)'>&#10094;</A>
 			<A class='next' onclick='plusSlides(1)'>&#10095;</A>
-		</div>
-		<br>
-		<div style="text-align:center">
-	 		<span class="dot" onclick="currentSlide(0)"></span>
-	 		<span class="dot" onclick="currentSlide(1)"></span>
+			<br>
+			<div style="text-align:center">
+		 		<span class="dot" onclick="currentSlide(0)"></span>
+		 		<span class="dot" onclick="currentSlide(1)"></span>
+			</div>
 		</div>
 		<div class='blockAd'>
 			<img src={{ url_for('static',filename='assets/jacket.png')}}>
@@ -29,13 +29,22 @@
 		</div>
 		<div class='blockAd'>
 			<img src={{ url_for('static',filename='assets/hood.png')}}>
-			<div class='adText'>No snowbunny here. Get womens' activewear today.</div>
+			<div class='adText'>No snowbunny here.<BR>Get womens' activewear now.</div>
 		</div>
-		<div class='blockAd'>
-			<img src={{ url_for('static',filename='assets/jacket.png')}}>
-			<div class='adText'>Climbing every mountain never looked so good.</div>
+	</div>
+	<div class='grid-menu'>
+		<div class='menuAd'>
+			<img src={{ url_for('static',filename='assets/cap.png')}}>
 		</div>
-
+		<div class='menuAd'>
+			<img src={{ url_for('static',filename='assets/synthetic.png')}}>
+		</div>
+		<div class='menuAd'>
+			<img src={{ url_for('static',filename='assets/resort.png')}}>
+		</div>
+		<div class='menuAd'>
+			<img src={{ url_for('static',filename='assets/vest.png')}}>
+		</div>
 	</div>
 {% endblock %}
 {% block script %}
