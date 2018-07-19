@@ -394,7 +394,6 @@ img {vertical-align: middle;}
 
 .grid-menu{
   display: grid;
-  grid-template-columns: auto auto auto auto;
   grid-gap: 20px;
   background-color: #ea9600;
   padding: 10px;
@@ -411,14 +410,13 @@ img {vertical-align: middle;}
   align-self: center;
   justify-self: center;
   padding: 0px;
+  object-fit: fill;
 }
 .menuAd img {
+	height: 100%;
 	width: 100%;
 	border: 1px;
-	border-color: #ea9600;
-}
-.menuAd:nth-of-type(x){
-	grid-column:x;
+	border-color: #ea9600;;
 }
 
 .link-button{
